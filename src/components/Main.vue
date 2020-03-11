@@ -244,6 +244,7 @@ export default {
 								schedule.time = [];
 								schedule.time_exist = false;
 								schedule.time_caution = "休館";
+								console.log(schedule);
 								break;
 							default:
 								time_arr = [];
@@ -281,17 +282,49 @@ export default {
 			
 			var has_schedule = false;
 			
+			var caution_data = { "no_play":0, "no_data":0, "no_schedule":0,"close":0 };
+			
 			schedules_arr.forEach((schedules) => {
 				if(schedules["time_exist"]) {
 					has_schedule = true;
+				} else {
+					switch (schedules["time_caution"]){
+						case "上映なし":
+							caution_data["no_play"]++;
+							break;
+						case "上映データなし":
+							caution_data["no_data"]++;
+							break;
+						case "スケジュールなし":
+							caution_data["no_schedule"]++;
+							break;
+						case "休館":
+							caution_data["close"]++;
+							break;
+					}
 				}
 			});	
+			
+			console.log(caution_data);
+			console.log(schedules_arr.length);
 
 			if(!has_schedule) {
-				result.status = "上映データなし";
+				let arr_count = schedules_arr.length;
+				let text;
+				if(caution_data["no_play"] == arr_count) {
+					text = "上映作品なし";
+				} else if(caution_data["no_data"] == arr_count) {
+					text = "上映データなし";
+				} else if(caution_data["no_schedule"] == arr_count) {
+					text = "上映スケジュールなし";
+				} else if(caution_data["close"] == arr_count) {
+					text = "休館";
+				}
+				result.status = text;
 				result.disabled = false;
 			}
 			
+			var time_count = 0;
 			if(schedules_arr.length > 0) {
 				var time_switch = false;
 				schedules_arr.forEach((schedules) => {
@@ -301,6 +334,7 @@ export default {
 					} else {
 						schedules["time"].forEach((time) => {
 							if(time["s"]) {
+								time_count++;
 								time_switch = true;
 								result.disabled = false;
 								return;
@@ -308,9 +342,13 @@ export default {
 						});
 					}
 				});
+				
+				
 				result.schedules = schedules_arr;
-				if(!time_switch) {
-					result.status = "本日上映終了";
+				if(!time_switch || time_count == 0) {
+					if(!result.status) {
+						result.status = "本日上映終了";
+					}
 				} 
 				result_arr.push(result);
 				
@@ -323,6 +361,8 @@ export default {
 			}
 			
 			});
+			
+			console.log(result_arr);
 						
 			this.display_data = result_arr;
 			this.gps = this.gps_parent;

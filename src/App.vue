@@ -114,10 +114,11 @@ export default {
 				  }.bind(this),
 				  function(error) {
 					  console.log(error);
-					  self.gps = false;
+					  this.gps = false;
+					  this.loading = false;
 					  this.modalShow = true;
 					  // エラー処理を書く
-				  }
+				  }.bind(this)
 		  ,options);
 		  } else {
 			  // エラー処理を書く
@@ -220,6 +221,9 @@ export default {
 				var theater = movie_item[i]["theater"];
 				for (let j = 0; j < movie_item[i]["schedule"].length; j++) {
 					let title = movie_item[i]["schedule"][j]["title"];
+					if(!title) {
+						return;
+					}
 					let release = movie_item[i]["schedule"][j]["release"];
 					if ( titles.indexOf(title) == -1) {
 						titles.push(title);
@@ -339,6 +343,9 @@ export default {
 				var title_arr = []
 				same_release.forEach((item) => {
 					let title = item.title;
+					if(!title) {
+						return;
+					}
 					if ( title.indexOf(' [data]') != -1) {
 						let searchIndex = title.lastIndexOf(" [data]");
 						title = title.slice(0,searchIndex);

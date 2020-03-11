@@ -30,7 +30,7 @@
 		</div>
 		<div class="info-item order-2 col-4">
 			<div class="inner d-flex align-items-center">
-				<p class="place mx-auto">{{ area.pref }}{{ area.city }}</p>
+				<h1 class="mx-auto">Cinesignage</h1>
 			</div>
 		</div>
   		<div class="info-item order-3 col-4">

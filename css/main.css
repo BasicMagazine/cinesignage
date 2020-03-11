@@ -51,15 +51,24 @@ footer.table-responsive {
 	font-weight: 200;
 }
 
+.display-info h1 {
+	padding-left:28px;
+	margin-bottom:0;
+	font-size:2rem;
+	font-family: mr-eaves-xl-modern, sans-serif;
+	font-weight: 300;
+	font-style: normal;
+	background: url("../images/logo.png") left center no-repeat;
+	background-size: 22px;
+}
+
 .display-info p.time {
+	padding-left: 30px;
+	margin-bottom: 0;
 	background: url("../images/ico_time.png") left center no-repeat;
 	background-size: 20px;
 }
 
-.display-info p.place {
-	background: url("../images/ico_place.png") left center no-repeat;
-	background-size: 20px;
-}
 
 @media screen and (max-width: 559px) {
 	.display-info {
@@ -87,11 +96,6 @@ footer.table-responsive {
 .info-item {
 	height: 70px;
 	padding: 0;
-}
-
-.display-info p {
-	padding-left: 30px;
-	margin-bottom: 0;
 }
 
 .display-info .form-inline {
@@ -536,12 +540,12 @@ nav.drawer-nav h1 {
 	padding-left:30px;
 }
 
-.nav_area h2.area{
+.nav_area h2.area {
 	background: url("../images/ico_place.png") left center no-repeat;
 	background-size: 20px auto;
 }
 
-.nav_area h2.sales{
+.nav_area h2.sales {
 	background: url("../images/ico_sales.png") left center no-repeat;
 	background-size: 20px auto;
 }
@@ -648,14 +652,16 @@ nav.drawer-nav h1 {
 	height: 40px;
 	border-radius: 0.3em;
 	margin-top:20px;
-	font-size: 1.4rem;
+	font-size: 16px;
 	padding-left:28px;
 }
 
-.modal-dialog {
-	margin-top:50px;
-	margin-left:5%;
-	width:90%;
+@media (max-width: 560px) {
+	.modal-dialog {
+		margin-top:50px;
+		margin-left:5%;
+		width:90%;
+	}
 }
 
 .modal-content {
@@ -675,6 +681,15 @@ nav.drawer-nav h1 {
 	margin-top: 0;
 	font-size: 1.4rem;
 	color: #212529;
+}
+
+.modal span {
+	font-size: 1.2rem;
+	color: #dc3545;
+}
+
+.modal .caution {
+	border: 1px solid #dc3545;	
 }
 
 .modal-content footer {
