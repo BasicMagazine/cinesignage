@@ -247,6 +247,22 @@ footer.table-responsive {
 	font-weight:600;
 }
 
+.theaterName h2 span.caution {
+	display:inline-block;
+	margin:0 5px 0 0;
+	text-align:center;
+	line-height:20px;
+	width:auto;
+	height:20px;
+	padding:0 5px 0 5px;
+	border-radius: 0.2em;
+	font-size: 1.3rem;
+	font-weight:600;
+	background:#fff;
+	color:#2B343E;
+	
+}
+
 .theaterName h2 span {
 	font-weight:400;
 	font-size: 1.3rem;
@@ -346,6 +362,31 @@ footer.table-responsive {
 	border-right:1px solid #fff;
 }
 
+.item_right {
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.item_cinema .caution {
+	min-height:80px;
+	font-size:1.5rem;
+	padding-left: 30px;
+	background: #4d4d4d;
+	color: #fff;
+}
+
+.item_cinema .no_result {
+	min-height:80px;
+	font-size:1.5rem;
+	padding-left: 30px;
+	background: #4d4d4d;
+	color: #fff;
+}
+
+.item_cinema .no_result p {
+	margin-bottom:0rem;
+}
+
 @media (max-width: 760px) {
 	.item_left {
 		border-right:none;
@@ -354,7 +395,7 @@ footer.table-responsive {
 }
 
 @media (max-width: 560px) {
-	.item_left {
+	.item_left,.item_cinema .caution {
 		padding-left: calc( ( (100% / 5) - (5rem) ) / 2 );
 	}
 }
@@ -395,11 +436,6 @@ footer.table-responsive {
 
 .item_left ul li:first-child{
 	margin-left: 0px;
-}
-
-.item_right {
-	padding-right: 0px;
-	padding-left: 0px;
 }
 
 .item_right ul{
@@ -653,7 +689,6 @@ nav.drawer-nav h1 {
 	border-radius: 0.3em;
 	margin-top:20px;
 	font-size: 16px;
-	padding-left:28px;
 }
 
 @media (max-width: 560px) {

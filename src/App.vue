@@ -221,9 +221,6 @@ export default {
 				var theater = movie_item[i]["theater"];
 				for (let j = 0; j < movie_item[i]["schedule"].length; j++) {
 					let title = movie_item[i]["schedule"][j]["title"];
-					if(!title) {
-						return;
-					}
 					let release = movie_item[i]["schedule"][j]["release"];
 					if ( titles.indexOf(title) == -1) {
 						titles.push(title);

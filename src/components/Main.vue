@@ -21,7 +21,7 @@
 			  </div>	  
 			  <div v-else>
 				  <h2 class="col-12">
-				  <span v-if="result.status"> {{ result.status }}</span>
+				  <span class="caution" v-if="result.status"> {{ result.status }}</span>
 				  {{ result.heading_parent }}&nbsp;
 				  <span v-if="gps">&nbsp;現在地より約{{ Math.floor( result.parent_data.address.distance / 1000 * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 ) }}km</span>
 				  </h2>
@@ -31,21 +31,24 @@
 				  <p class="col-12">{{ result.parent_data.address.map }}</p>
 			      <div class="info col-12">
 					  <b-button class="schedules"
-					  	:class="[visible[index] ? null : 'collapsed',{disable: result.disabled === true},{open: visible[index] === true}]"
+					  	:class="[visible[index] ? null : 'collapsed',{open: visible[index] === true}]"
       					:aria-expanded="visible[index] ? 'true' : 'false'"
       					:aria-controls="'collapse-' + index"
       					v-on:click="collapseClick(index,result.disabled)"	  
 					  >上映スケジュール</b-button>
-					  <b-button v-bind:class="{ disable: result.disabled === true }" v-bind:href="'https://maps.google.co.jp/maps/search/' + result.parent_data.address.map" target="_blank">MAP</b-button>
-					  <b-button v-bind:class="{ disable: result.disabled === true }" v-bind:href="result.parent_data.address.url" target="_blank">URL</b-button>
-					  <b-button v-bind:class="{ disable: result.disabled === true }" v-bind:href="'tel:' + result.parent_data.address.tel">TEL</b-button>
+					  <b-button v-bind:href="'https://maps.google.co.jp/maps/search/' + result.parent_data.address.map" target="_blank">MAP</b-button>
+					  <b-button v-bind:href="result.parent_data.address.url" target="_blank">URL</b-button>
+					  <b-button v-bind:href="'tel:' + result.parent_data.address.tel">TEL</b-button>
 			      </div>
 			  </div>
 		  </div>
     	</div>
       <b-collapse v-bind:id="'collapse-' + index" v-model="visible[index]">
         <div class="item_cinema">
-			<div class="row" v-for="cinema in result.schedules" v-bind:key="cinema.id">
+			<div v-if="result.status == '上映データなし'" class="no_result d-flex align-items-center">
+				<p>上映スケジュールが存在しません。直接劇場にお尋ねください</p>
+			</div>
+			<div v-else class="row" v-for="cinema in result.schedules" v-bind:key="cinema.id">
 				<div class="item_left col-md-5 col-xs-12 d-flex align-items-center">
 					<div class="inner">
 						<h3>{{ cinema.heading_child }}</h3>
@@ -63,15 +66,13 @@
 						</div>
 					</div>
 				</div>
-				<div class="item_right col-md-7 col-xs-12">
-					<div v-if="cinema.time_exist">
-						<ul class="list-inline">
-							<li class="list-inline-item" v-for="times in cinema.time" v-bind:key="times.id"><p v-bind:class="{ 'show-active' : times.s }">{{ times.t }}</p></li>
-						</ul>
-					</div>
-					<div v-else>
-						<p>{{cinema.time_caution}}</p>
-					</div>
+				<div v-if="cinema.time_exist" class="item_right col-md-7 col-xs-12">
+					<ul class="list-inline">
+						<li class="list-inline-item" v-for="times in cinema.time" v-bind:key="times.id"><p v-bind:class="{ 'show-active' : times.s }">{{ times.t }}</p></li>
+					</ul>
+				</div>
+				<div v-else class="item_right col-md-7 col-xs-12 d-flex align-items-center caution">
+					<p>{{cinema.time_caution}}</p>
 				</div>
 			</div>
         </div>
@@ -213,22 +214,7 @@ export default {
 						var push_data = true;
 						switch (time[keys][0]){
 							case "no_play":
-								var day_select = this.$parent.time["unixtime"];
-								var release_time;
-								if(this.$parent.category == "titles") {
-									release_time = value.release;
-								} else {
-									release_time = schedules.release;
-								}
-								
-								if ( release_time > day_select ){
-									push_data = false;
-								} else {
-									schedule.time = [];
-									schedule.time_exist = false;
-									schedule.time_caution = "上映なし";								
-								}
-								
+								push_data = false;
 								break;
 							case "no_schedule":
 								schedule.time = [];
@@ -243,7 +229,7 @@ export default {
 							case "close":
 								schedule.time = [];
 								schedule.time_exist = false;
-								schedule.time_caution = "休館";
+								schedule.time_caution = "本日休館";
 								console.log(schedule);
 								break;
 							default:
@@ -298,7 +284,7 @@ export default {
 						case "スケジュールなし":
 							caution_data["no_schedule"]++;
 							break;
-						case "休館":
+						case "本日休館":
 							caution_data["close"]++;
 							break;
 					}
@@ -318,10 +304,10 @@ export default {
 				} else if(caution_data["no_schedule"] == arr_count) {
 					text = "上映スケジュールなし";
 				} else if(caution_data["close"] == arr_count) {
-					text = "休館";
+					text = "本日休館";
 				}
 				result.status = text;
-				result.disabled = false;
+				result.disabled = true;
 			}
 			
 			var time_count = 0;

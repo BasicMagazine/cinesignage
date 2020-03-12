@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/cinesignage/precache-manifest.0128389bd657ca5feced0d3d14ce962b.js"
+  "/cinesignage/precache-manifest.e40e9ea87432db502b53945ace9789c2.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "cinesignage_pwa"});
