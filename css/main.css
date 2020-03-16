@@ -225,6 +225,22 @@ footer.table-responsive {
 	margin-bottom: 0;
 }
 
+header .display_area {
+	min-height:60px;
+	padding-left:30px;
+	border-bottom: 1px solid #fff;
+	background:	#36404B;
+}
+
+header .display_area p {
+	padding-left:25px;
+	font-size:1.5rem;
+	font-weight:500;
+	margin-bottom: 0rem;
+	background: url("../images/ico_place.png") left center no-repeat;
+	background-size: 15px;
+}
+
 #main_container {
 	height:auto;
 	width:auto;
@@ -255,7 +271,6 @@ footer.table-responsive {
 	width:auto;
 	height:20px;
 	padding:0 5px 0 5px;
-	border-radius: 0.2em;
 	font-size: 1.3rem;
 	font-weight:600;
 	background:#fff;

@@ -7,7 +7,7 @@
   </div>
   <div id="overlay" v-show="overlay"></div>
   <header class="sticky-top" role="banner">
-	  <Header :Data_calendar="Data_calendar" :area="area" @callParent_rearea="get_data" @callParent_reload="get_coords" @callParent_refresh="refresh_data" :data_exist="data_exist"></Header>
+	  <Header :Data_calendar="Data_calendar" :area="area" @callParent_rearea="get_data" @callParent_reload="get_coords" @callParent_refresh="refresh_data" :data_exist="data_exist" :obj_count="results.length"></Header>
   </header>
   <main id="main_container" class="container-fluid" role="main">
 	  <div id="changing" v-show="changing">
@@ -56,7 +56,9 @@ export default {
 		theater_data:null,
 		area:{
 			"pref":null,
-			"city":null
+			"current_location":null,
+			"select_area":null,
+			"location_txt":null
 		},
 		pref_code:null,
 		geo:{
@@ -137,8 +139,10 @@ export default {
 			  }
 		  }).then(response => {
 			  if(this.gps) {
-				  this.area.pref = response.data.area;
-			  } 
+				  this.area.pref = response.data.pref;
+				  this.area.current_location = response.data.area;
+				  this.area.location_txt = response.data.area;
+			  }
 			  this.loading_txt = "データを受信しています...";
 			  this.pref_code = response.data.pref_code;
 			  this.response_data = response.data.body;
@@ -149,7 +153,7 @@ export default {
 		   .catch(error => {
 			   alert('データの取得に失敗しました。しばらくしてから再度お試しください');
 			   this.data_exist = false;
-			   this.area.pref = "No_Data";
+			   this.area.current_location = "No_Data";
 			   this.loading = false;
 		   });
 	  },
@@ -233,7 +237,7 @@ export default {
 					} 
 				}
 			}
-		
+			
 			for (let i = 0; i < result.length; i++) {
 				var title = result[i]["title"];
 				for (let j = 0; j < movie_item.length; j++) {
@@ -343,6 +347,7 @@ export default {
 					if(!title) {
 						return;
 					}
+						
 					if ( title.indexOf(' [data]') != -1) {
 						let searchIndex = title.lastIndexOf(" [data]");
 						title = title.slice(0,searchIndex);

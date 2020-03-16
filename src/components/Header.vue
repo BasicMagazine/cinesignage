@@ -67,6 +67,12 @@
 		<li v-bind:id="'calendar-' + [index]" v-bind:ref="[todo.id]" class = "list-group-item flex-fill" v-bind:class="{ enable: todo.touch,active: index === day_button_index }" v-for="(todo,index) in day_button_list" :key="todo.id" v-on:click="daybtnClick(index)"><p class="day">{{todo.num}}<span>{{todo.str}}</span></p></li>
 	</ul>
 </div>
+<div class="display_area d-flex align-items-center">
+	<p v-if="menu_button_index == 0">{{area.location_txt}}の劇場情報 (全{{obj_count}}件)</p>
+	<p v-else-if="menu_button_index == 1">{{area.location_txt}}付近で上映中の作品 (全{{obj_count}}件)</p>
+	<p v-else-if="menu_button_index == 2">{{area.location_txt}}付近で割引実施中の劇場(全{{obj_count}}件)</p>
+</div>
+
 </div>
 </template>
 
@@ -85,6 +91,7 @@ export default {
 	  day_button_index:0,
 	  geo_list:geolist,
 	  selected_area: null,
+	  area_txt: null,
 	  overlay:false,
 	  selected_sales:null,
       sales_filter: salesfilter
@@ -93,7 +100,8 @@ export default {
   props: {
     area: Object,
 	Data_calendar: Array,
-	data_exist: Boolean
+	data_exist: Boolean,
+	obj_count: Number
   },
   mounted () {
     	setInterval(()=>{
@@ -233,9 +241,7 @@ export default {
 		  this.day_button_list = calendar;
 		  
 		  this.day_button_index = 0;
-		  
-		  console.log(this.day_button_list);
-		  
+		  		  
 		  if (!this.day_button_list[0].touch) {
 			  console.log("null");
 			  this.day_button_index = null;
@@ -254,12 +260,31 @@ export default {
 		  }
 		  
 	  },
+	  area: function (val, oldVal) {  		  
+		  var area_detail = this.area.location_txt;  
+		  switch (this.menu_button_index){
+			case 0:
+			if(this.$parent.gps) {
+				this.area_txt = `${area_detail}付近の劇場情報 (全${this.obj_count}件)`;
+			} else {
+				this.area_txt = `${area_detail}の劇場情報 (全${this.obj_count}件)`;
+			}
+			break;
+			case 1:
+				this.area_txt = `${area_detail}付近で上映中の作品 (全${this.obj_count}件)`;
+				break;
+			case 2:
+				this.area_txt = `${area_detail}付近で割引実施中の劇場 (全${this.obj_count}件)`;
+				break;
+		  }
+	  },
       selected_area: function (val, oldVal) {
 		if(val !== null) {
 			this.$parent.geo["lat"] = val.lat;
 			this.$parent.geo["lng"] = val.lng;
 			this.$parent.gps = false;
 			this.$parent.area.pref = val.txt;
+			this.$parent.area.location_txt = val.txt;
 			this.$parent.area.city = null;
 			this.$parent.Data_calendar = [];
 			this.reloadClick(1);

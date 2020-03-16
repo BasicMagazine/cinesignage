@@ -25,14 +25,16 @@ export default {
 		this.area_button_index = index;
 		if(index == 0) {
 			this.$parent.filter_num = null;
-			if(!this.$parent.gps) {
-				this.$parent.area.city = null;
+			this.$parent.area.select_area = null;
+			if(this.$parent.gps) {
+				this.$parent.area.location_txt = this.$parent.area.current_location;
+			} else {
+				this.$parent.area.location_txt = this.$parent.area.pref;
 			}
 		} else {
 			this.$parent.filter_num = index - 1;
-			if(!this.$parent.gps) {
-				this.$parent.area.city = area;
-			}
+			this.$parent.area.select_area = area;
+			this.$parent.area.location_txt = this.$parent.area.pref + this.$parent.area.select_area;
 		}
 		this.$parent.Data_calendar = [];
 		this.$emit('callParent_refresh');

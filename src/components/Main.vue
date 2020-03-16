@@ -291,9 +291,6 @@ export default {
 				}
 			});	
 			
-			console.log(caution_data);
-			console.log(schedules_arr.length);
-
 			if(!has_schedule) {
 				let arr_count = schedules_arr.length;
 				let text;
